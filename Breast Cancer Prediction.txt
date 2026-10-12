@@ -1,0 +1,33 @@
+
+# Breast Cancer Prediction using R
+
+# Sample medical data
+tumor_size <- c(2, 3, 4, 5, 6, 7, 8, 9)
+cell_shape <- c(2, 2, 3, 4, 5, 6, 7, 8)
+diagnosis <- c(0, 0, 0, 0, 1, 1, 1, 1)
+
+# Create data frame
+data <- data.frame(tumor_size, cell_shape, diagnosis)
+
+# Build prediction model
+model <- glm(diagnosis ~ tumor_size + cell_shape,
+             data = data, family = binomial)
+
+# Predict for new patient
+new_patient <- data.frame(tumor_size = 6,
+                          cell_shape = 5)
+
+probability <- predict(model, newdata = new_patient,
+                       type = "response")
+
+cat("Breast Cancer Prediction\n")
+cat("------------------------\n")
+cat("Tumor Size:", new_patient$tumor_size, "\n")
+cat("Cell Shape:", new_patient$cell_shape, "\n")
+cat("Cancer Probability:", round(probability * 100, 2), "%\n")
+
+if (probability >= 0.5) {
+  cat("Prediction: Malignant (Cancerous)\n")
+} else {
+  cat("Prediction: Benign (Non-cancerous)\n")
+}
